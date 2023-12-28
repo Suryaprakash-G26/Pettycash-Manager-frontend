@@ -5,6 +5,7 @@ export default function Topbar() {
         <a className="btn btn-ghost text-xl">Dashboard</a>
       </div>
       <div className="flex-none">
+
         <ul className="menu menu-horizontal px-1">
             <li className="p-2 bg-base-100">Add Expense</li>
             <li className="p-2 bg-base-100">Add Income</li>

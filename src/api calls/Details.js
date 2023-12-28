@@ -1,10 +1,10 @@
 const Api= "https://petty-cash-backend-w7d0.onrender.com";
-// const trail="http://localhost:8500"
+ const trail="http://localhost:8500"
   
 
 export async function getalldatas(userid) {
   try {
-    const res = await fetch(`${Api}/data/allexpenses/${userid}`, {
+    const res = await fetch(`${trail}/data/allexpenses/${userid}`, {
       method: "GET",
       // No need to include a body for a GET request
     });
@@ -21,5 +21,15 @@ export async function getalldatas(userid) {
   }
 }
 
-
+export async function AddnewExpense(newexpense){
+  const res = await fetch(`${trail}/data/addexpense`, {
+      method: "POST",
+      body: JSON.stringify(newexpense),
+      headers: {
+        "Content-type": "application/json",
+      },
+      });
+const data = await res.json();
+return data; 
+}
 
