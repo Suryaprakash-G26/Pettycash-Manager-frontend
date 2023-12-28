@@ -23,6 +23,15 @@ const PieChart = ({ info }) => {
     const category = mergedData.map((data) => data.category);
     const prices = mergedData.map((data) => data.price);
 
+    // Calculate the total
+    const total = prices.reduce((acc, price) => acc + price, 0);
+
+    // Calculate percentages
+    const percentages = prices.map((price) => ((price / total) * 100).toFixed(2));
+
+    // Generate random colors
+    const randomColors = category.map(() => `rgba(${Math.random() * 255}, ${Math.random() * 255}, ${Math.random() * 255}, 0.2)`);
+
     // Check if the chartRef is available
     if (chartRef.current) {
       // Create the chart
@@ -32,27 +41,33 @@ const PieChart = ({ info }) => {
           labels: category,
           datasets: [
             {
-                data: prices,
-                backgroundColor: [
-                  'rgba(255, 99, 132, 0.2)',
-                  'rgba(54, 162, 235, 0.2)',
-                  'rgba(255, 206, 86, 0.2)',
-                  'rgba(75, 192, 192, 0.2)',
-                  'rgba(153, 102, 255, 0.2)',
-                  'rgba(50, 205, 50, 0.2)',  
-                ],
-                borderColor: [
-                  'rgba(255, 99, 132, 1)',
-                  'rgba(54, 162, 235, 1)',
-                  'rgba(255, 206, 86, 1)',
-                  'rgba(75, 192, 192, 1)',
-                  'rgba(153, 102, 255, 1)',
-                  'rgba(50, 205, 50, 1)',  
-                ],
-                borderWidth: 1,
-                
+              data: prices,
+              backgroundColor: randomColors,
+              borderColor: randomColors.map(color => color.replace('0.2', '1')), // Make border colors fully opaque
+              borderWidth: 1,
             },
           ],
+        },
+        options: {
+          plugins: {
+            legend: {
+              display: true,
+              position: 'bottom',
+            },
+            tooltip: {
+              callbacks: {
+                label: (context) => {
+                  const label = context.label || '';
+                  const value = context.parsed;
+                  return `${label}: ${value}`;
+                },
+                afterLabel: (context) => {
+                  const index = context.dataIndex;
+                  return `Percentage: ${percentages[index]}%`;
+                },
+              },
+            },
+          },
         },
       });
 
@@ -65,8 +80,8 @@ const PieChart = ({ info }) => {
 
   return (
     <canvas
-      className="w-2/5 mx-auto"
-      style={{ maxWidth: "30%" }}
+      className="w-full h-full"
+      style={{ maxWidth: '400px', maxHeight: '400px' }}
       ref={chartRef}
     />
   );

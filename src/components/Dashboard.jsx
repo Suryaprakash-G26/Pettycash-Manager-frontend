@@ -1,20 +1,30 @@
 import { useEffect, useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faChartPie, faTable } from "@fortawesome/free-solid-svg-icons";
 import Topbar from "./topbar";
 import { getalldatas } from "../api calls/Details";
 import PieChart from "../Charts/piechart";
+import LineChart from "../Charts/linechart";
+import { library } from "@fortawesome/fontawesome-svg-core";
+import { useNavigate } from "react-router-dom";
 
-const Dashboard = () => {
+const DashboardPage = () => {
+  library.add(faChartPie, faTable);
+
+  const navigate = useNavigate();
+
+  // Set data and tables
   const [info, setInfo] = useState([]);
-  const [showTable, setShowTable] = useState(true);
+  const [showTable, setShowTable] = useState(false);
 
   // Retrieve the value associated with the key "Key" from localStorage.
   const key = localStorage.getItem("Key");
-  // parse the data
+  // Parse the data
   const userid = JSON.parse(key);
 
-  // Check whether key is there or not
+  // Check whether the key is there or not
   if (!userid) {
-    console.log("error signin Again");
+    console.log("error, sign in again");
   }
 
   useEffect(() => {
@@ -24,33 +34,36 @@ const Dashboard = () => {
   return (
     <>
       <Topbar />
-      <label className="swap flex place-items-center p-x-5 m-x-5 p-3 m-3">
+      <label className="swap flex place-items-center p-x-5 m-x-5 p-5 m-5">
         <input
           type="checkbox"
           checked={showTable}
           onChange={() => setShowTable(!showTable)}
         />
-        <div className="swap-on">Table</div>
-        <div className="swap-off">Charts</div>
+        {showTable ? (
+          <FontAwesomeIcon icon={faChartPie} />
+        ) : (
+          <FontAwesomeIcon icon={faTable} />
+        )}
       </label>
-
       <div className="overflow-x-auto">
         {showTable ? (
           <table className="table">
             <thead>
-              <tr>
-                <th>date</th>
-                <th>title</th>
-                <th>category</th>
+              <tr className="text-xl">
+                <th>Date</th>
+                <th>Title</th>
+                <th>Category</th>
                 <th>Type</th>
-                <th>price</th>
-                <th>quantity</th>
-                <th>totalPrice</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Total</th>
+                <th>Action</th>
               </tr>
             </thead>
             <tbody>
               {info.map((data, idx) => (
-                <tr key={idx}>
+                <tr key={idx} className="table-row">
                   <td>{data.date}</td>
                   <td>{data.title}</td>
                   <td>{data.category}</td>
@@ -60,10 +73,10 @@ const Dashboard = () => {
                   <td>{data.totalPrice}</td>
                   <td>
                     <button
-                      className="btn glass"
-                      onClick={() => console.log(data._id, data.userId)}
+                      className="btn btn-warning btn-md"
+                      onClick={() => navigate(`/editexpense/${data._id}`)}
                     >
-                      edit/update
+                      Alter
                     </button>
                   </td>
                 </tr>
@@ -71,13 +84,14 @@ const Dashboard = () => {
             </tbody>
           </table>
         ) : (
-          <>
+          <div className="grid grid-cols-1 sm:grid-cols-2">
             <PieChart info={info} />
-          </>
+            <LineChart info={info} />
+          </div>
         )}
       </div>
     </>
   );
 };
 
-export default Dashboard;
+export default DashboardPage;

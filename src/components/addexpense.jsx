@@ -112,7 +112,7 @@ const Addexpense = () => {
                     <option value="shopping">Shopping</option>
                     <option value="housing">Housing</option>
                     <option value="transportation">Transportation</option>
-                    <option value="personalCare">Personal Care</option>
+                    <option value="Others">Others</option>
                   </select>
 
                   {touched.category && errors.category && (

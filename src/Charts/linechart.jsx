@@ -1,16 +1,14 @@
 /* eslint-disable react/prop-types */
 import Chart from 'chart.js/auto';
 import { useEffect, useRef } from 'react';
-import 'chartjs-adapter-date-fns';
 
-const LineChart = ({ info }) => {
+const BarChart = ({ info }) => {
     const chartRef = useRef();
-    console.log('info ::', info);
 
     useEffect(() => {
-        // Merge data for the same date
+        // Merge data for the same type
         const mergedData = info.reduce((acc, data) => {
-            const existingData = acc.find(item => item.date === data.date);
+            const existingData = acc.find(item => item.category === data.category);
 
             if (existingData) {
                 existingData.price += data.price;
@@ -21,37 +19,40 @@ const LineChart = ({ info }) => {
             return acc;
         }, []);
 
-        // Extract date and prices from merged data
-        const dates = mergedData.map(data => new Date(data.date));
+        // Extract unique types and prices from merged data
+        const uniqueTypes = mergedData.map(data => data.category);
         const prices = mergedData.map(data => data.price);
 
         // Check if the chartRef is available
         if (chartRef.current) {
             // Create the chart
             const myChart = new Chart(chartRef.current, {
-                type: 'line',
+                type: 'bar',
                 data: {
-                    labels: dates,
+                    labels: uniqueTypes,
                     datasets: [
                         {
-                            label: 'Price',
                             data: prices,
-                            fill: false,
-                            borderColor: 'rgba(75, 192, 192, 1)',
+                            backgroundColor: uniqueTypes.map(() => `rgba(${Math.random() * 255}, ${Math.random() * 255}, ${Math.random() * 255}, 0.4)`),
+                            borderColor: uniqueTypes.map(() => `rgba(${Math.random() * 255}, ${Math.random() * 255}, ${Math.random() * 255}, 1)`),
                             borderWidth: 1,
+                            label: 'Categories', // Legend label
                         },
                     ],
                 },
                 options: {
                     scales: {
                         x: {
-                            type: 'time',
-                            time: {
-                                unit: 'day',
-                            },
+                            stacked: true,
                         },
                         y: {
-                            beginAtZero: true,
+                            stacked: true,
+                        },
+                    },
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'bottom',
                         },
                     },
                 },
@@ -64,7 +65,13 @@ const LineChart = ({ info }) => {
         }
     }, [info]);
 
-    return <canvas className="w-4/5 mx-auto" style={{ maxWidth: '80%' }} ref={chartRef} />;
+    return (
+        <canvas
+          className="w-full h-full"
+          style={{ maxWidth: '400px', maxHeight: '400px' }}
+          ref={chartRef}
+        />
+    );
 };
 
-export default LineChart;
+export default BarChart;
