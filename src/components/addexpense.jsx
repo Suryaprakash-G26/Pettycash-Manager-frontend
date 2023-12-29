@@ -3,11 +3,14 @@ import { useState } from "react";
 import { AddExpense } from "../Formik/addexpense";
 import { useFormik } from "formik";
 import { AddnewExpense } from "../api calls/Details";
+import { AppState } from "../contextapi/dataupdate";
+import { useNavigate } from "react-router-dom";
 
 const Addexpense = () => {
-    const [data, setdata] = useState("");
-    const [success, setsuccess] = useState("");
-    const [loading, setLoading] = useState(false);
+const navigate=useNavigate()
+  //context api
+  const { data, setdata, success, setsuccess, loading, setloading ,setinfo} = AppState();
+
    // Retrieve the value associated with the key "Key" from localStorage.
    const key = localStorage.getItem("Key");
    // parse the data
@@ -30,7 +33,7 @@ const Addexpense = () => {
         console.log("Form submitted:", expense);
         try {
             // Set loading to true during form submission
-            setLoading(true);
+            setloading(true);
             const info = await AddnewExpense(expense);
             if (info?.error) {
               setdata(info.error);
@@ -39,22 +42,25 @@ const Addexpense = () => {
               setsuccess(info.data);
               setdata("");
               console.log(info);
+              setinfo(info.newdata)
             }
           } catch (error) {
             console.error("Error during form submission:", error);
           } finally {
-            setLoading(false); // Set loading back to false after form submission
+            setloading(false); // Set loading back to false after form submission
             setTimeout(() => {
               setsuccess(""), setdata("");
-            }, 5000); // set to null after 10 secconds
+navigate('/')
+            }, 1000); // set to null after 10 secconds
           }
 
       },
     });
 
   return (
-    <div className="flex flex-col justify-center items-center m-2">
-      <div className="card m-5 p-5 bg-base-100 shadow-xl image-full">
+    <div className="flex flex-col justify-center items-center m-5 max-w-lg mx-auto">
+    <div className="card m-5 p-5 bg-base-100 shadow-xl image-full">
+  
         <figure>
           <img
             src="https://cdn.zeebiz.com/sites/default/files/2018/08/30/50690-indian-currency-dna.jpg"
@@ -107,11 +113,11 @@ const Addexpense = () => {
                     <option value="" disabled>
                       Select category
                     </option>
-                    <option value="food">Food</option>
-                    <option value="entertainment">Entertainment</option>
-                    <option value="shopping">Shopping</option>
-                    <option value="housing">Housing</option>
-                    <option value="transportation">Transportation</option>
+                    <option value="Food">Food</option>
+                    <option value="Entertainment">Entertainment</option>
+                    <option value="Shopping">Shopping</option>
+                    <option value="Housing">Housing</option>
+                    <option value="Transportation">Transportation</option>
                     <option value="Others">Others</option>
                   </select>
 
@@ -163,7 +169,7 @@ const Addexpense = () => {
                 </div>
 
                 <button
-                  className="btn btn-success m-2 p-2 w-full"
+                  className="btn btn-success m-2 p-2 "
                   type="submit"
                   disabled={loading}
                 >

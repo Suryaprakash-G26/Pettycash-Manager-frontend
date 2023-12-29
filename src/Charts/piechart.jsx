@@ -29,8 +29,21 @@ const PieChart = ({ info }) => {
     // Calculate percentages
     const percentages = prices.map((price) => ((price / total) * 100).toFixed(2));
 
-    // Generate random colors
-    const randomColors = category.map(() => `rgba(${Math.random() * 255}, ${Math.random() * 255}, ${Math.random() * 255}, 0.2)`);
+    // Define fixed and distinct colors
+    const fixedColors = [
+      "#FF5733",
+      "#33FF57",
+      "#5733FF",
+      "#FF33A1",
+      "#33A1FF",
+      "#A1FF33",
+    ];
+
+    // Assign colors to categories
+    const categoryColors = category.reduce((acc, _, index) => {
+      acc[category[index]] = fixedColors[index % fixedColors.length];
+      return acc;
+    }, {});
 
     // Check if the chartRef is available
     if (chartRef.current) {
@@ -42,8 +55,8 @@ const PieChart = ({ info }) => {
           datasets: [
             {
               data: prices,
-              backgroundColor: randomColors,
-              borderColor: randomColors.map(color => color.replace('0.2', '1')), // Make border colors fully opaque
+              backgroundColor: category.map((cat) => categoryColors[cat]),
+              borderColor: category.map((cat) => categoryColors[cat].replace('0.2', '1')),
               borderWidth: 1,
             },
           ],

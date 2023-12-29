@@ -1,4 +1,7 @@
+import { useNavigate } from "react-router-dom";
+
 export default function Topbar() {
+  const navigate=useNavigate()
   return (
     <div className="navbar bg-base-100">
       <div className="flex-1">
@@ -7,9 +10,9 @@ export default function Topbar() {
       <div className="flex-none">
 
         <ul className="menu menu-horizontal px-1">
-            <li className="p-2 bg-base-100">Add Expense</li>
-            <li className="p-2 bg-base-100">Add Income</li>
-            <li className="p-2 bg-base-100">All details</li>
+          
+            <li className="p-2 bg-base-100" onClick={()=>navigate('/addexpense')} >Add Expense</li>
+            <li className="p-2 bg-base-100" onClick={()=>navigate()} >Add Income</li>
         </ul>
         <div className=" dropdown dropdown-hover dropdown-end">
           <div

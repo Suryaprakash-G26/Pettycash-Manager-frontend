@@ -23,6 +23,22 @@ const BarChart = ({ info }) => {
         const uniqueTypes = mergedData.map(data => data.category);
         const prices = mergedData.map(data => data.price);
 
+        // Define fixed and distinct colors
+        const fixedColors = [
+            "#FF5733",
+            "#33FF57",
+            "#5733FF",
+            "#FF33A1",
+            "#33A1FF",
+            "#A1FF33",
+        ];
+
+        // Assign colors to categories consistently
+        const categoryColors = uniqueTypes.reduce((acc, _, index) => {
+            acc[uniqueTypes[index]] = fixedColors[index % fixedColors.length];
+            return acc;
+        }, {});
+
         // Check if the chartRef is available
         if (chartRef.current) {
             // Create the chart
@@ -33,8 +49,8 @@ const BarChart = ({ info }) => {
                     datasets: [
                         {
                             data: prices,
-                            backgroundColor: uniqueTypes.map(() => `rgba(${Math.random() * 255}, ${Math.random() * 255}, ${Math.random() * 255}, 0.4)`),
-                            borderColor: uniqueTypes.map(() => `rgba(${Math.random() * 255}, ${Math.random() * 255}, ${Math.random() * 255}, 1)`),
+                            backgroundColor: uniqueTypes.map(type => categoryColors[type]),
+                            borderColor: uniqueTypes.map(type => categoryColors[type]),
                             borderWidth: 1,
                             label: 'Categories', // Legend label
                         },

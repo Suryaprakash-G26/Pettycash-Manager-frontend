@@ -1,5 +1,5 @@
 const Api= "https://petty-cash-backend-w7d0.onrender.com";
-//  const trail="http://localhost:8500"
+// const Api="http://localhost:8500"
   
 
 export async function getalldatas(userid) {
@@ -35,7 +35,7 @@ return data;
 
 
 export async function UpdateExpense(id,edited){
-  const res = await fetch(`${Api}/${id}`, {
+  const res = await fetch(`${Api}/data/editexpense/${id}`, {
       method: "PUT",
       body: JSON.stringify(edited),
       headers: {
@@ -45,4 +45,16 @@ export async function UpdateExpense(id,edited){
     const data = await res.json();
     return data;
   
+}
+
+
+export async function DeleteExpense(id){
+  const res=await  fetch(`${Api}/data/deleteexpense/${id}`, {
+      method: "DELETE",
+      headers: {
+        "Content-type": "application/json",
+      },
+    });
+    const data = await res.json();
+    return data;
 }

@@ -1,51 +1,99 @@
-import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChartPie, faTable } from "@fortawesome/free-solid-svg-icons";
 import Topbar from "./topbar";
-import { getalldatas } from "../api calls/Details";
 import PieChart from "../Charts/piechart";
 import LineChart from "../Charts/linechart";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { useNavigate } from "react-router-dom";
+import { AppState } from "../contextapi/dataupdate";
+import { DeleteExpense } from "../api calls/Details";
 
 const DashboardPage = () => {
+  const navigate = useNavigate();
   library.add(faChartPie, faTable);
 
-  const navigate = useNavigate();
-
-  // Set data and tables
-  const [info, setInfo] = useState([]);
-  const [showTable, setShowTable] = useState(false);
+  // contextapi
+  const {
+    info,
+    setinfo,
+    showTable,
+    setShowTable,
+    success,
+    data,
+    setsuccess,
+    setdata,
+  } = AppState();
 
   // Retrieve the value associated with the key "Key" from localStorage.
   const key = localStorage.getItem("Key");
   // Parse the data
-  const userid = JSON.parse(key);
 
   // Check whether the key is there or not
-  if (!userid) {
+  if (!key) {
     console.log("error, sign in again");
   }
 
-  useEffect(() => {
-    getalldatas(userid).then((data) => setInfo(data.data));
-  }, [userid]);
+  const deleteexpense = async (id) => {
+    try {
+      const deleteData = await DeleteExpense(id);
+      if (deleteData?.error) {
+        setdata(deleteData.error);
+        setsuccess("");
+      } else {
+        setsuccess(deleteData.data);
+        setdata("");
+        const newinfo = info.filter((exp) => exp._id != id);
+        setinfo(newinfo);
+      }
+    } catch (error) {
+      console.error("Error during form submission:", error);
+    } finally {
+      setTimeout(() => {
+        setsuccess("");
+        setdata("");
+        navigate("/");
+      }, 1000); // set to null after 10 seconds
+    }
+  };
 
   return (
     <>
       <Topbar />
-      <label className="swap flex place-items-center p-x-5 m-x-5 p-5 m-5">
+      {success && (
+        <div className="toast fixed toast-top toast-end">
+          <div className="alert alert-success">
+            <span>{success}</span>
+          </div>
+        </div>
+      )}
+
+      {data && (
+        <div className="toast fixed toast-top toast-end">
+          <div className="alert alert-info">
+            <span>{data}</span>
+          </div>
+        </div>
+      )}
+      <label className="swap flex place-items-end justify-end p-5 m-5">
         <input
           type="checkbox"
           checked={showTable}
           onChange={() => setShowTable(!showTable)}
+          aria-label={
+            showTable ? "Switch to Chart View" : "Switch to Table View"
+          }
         />
         {showTable ? (
-          <FontAwesomeIcon icon={faChartPie} />
+          <>
+            <FontAwesomeIcon icon={faChartPie} /> <h6>Chart</h6>
+          </>
         ) : (
-          <FontAwesomeIcon icon={faTable} />
+          <>
+            <FontAwesomeIcon icon={faTable} /> <h6>Table</h6>
+          </>
         )}
       </label>
+
       <div className="overflow-x-auto">
         {showTable ? (
           <table className="table">
@@ -72,12 +120,36 @@ const DashboardPage = () => {
                   <td>{data.quantity}</td>
                   <td>{data.totalPrice}</td>
                   <td>
-                    <button
-                      className="btn btn-warning btn-md"
-                      onClick={() => navigate(`/editexpense/${data._id}`)}
-                    >
-                      Alter
-                    </button>
+                    <div className="dropdown dropdown-left dropdown-end 	 ">
+                      <div
+                        tabIndex={0}
+                        role="button"
+                        className="btn btn-accent m-1"
+                      >
+                        edit/delete
+                      </div>
+                      <ul
+                        tabIndex={0}
+                        className="dropdown-content z-[1] menu p-1 m-2 shadow bg-base-100 rounded-box w-52"
+                      >
+                        <li>
+                          <button
+                            className="btn btn-warning btn-sm"
+                            onClick={() => navigate(`/editexpense/${data._id}`)}
+                          >
+                            Edit
+                          </button>
+                        </li>
+                        <li>
+                          <button
+                            className="btn btn-error btn-sm"
+                            onClick={() => deleteexpense(data._id)}
+                          >
+                            Delete
+                          </button>
+                        </li>
+                      </ul>
+                    </div>
                   </td>
                 </tr>
               ))}
