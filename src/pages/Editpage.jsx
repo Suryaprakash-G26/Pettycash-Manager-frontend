@@ -18,7 +18,7 @@ const Editpage = () => {
     // Update state
     setEditable(foundEditable);
     setIndex(foundIndex);
-  }, [id, info]); // Include id and info as dependencies
+  }, [id, info]);
 
   return (
     

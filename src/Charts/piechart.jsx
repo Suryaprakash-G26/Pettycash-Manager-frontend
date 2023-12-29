@@ -27,16 +27,18 @@ const PieChart = ({ info }) => {
     const total = prices.reduce((acc, price) => acc + price, 0);
 
     // Calculate percentages
-    const percentages = prices.map((price) => ((price / total) * 100).toFixed(2));
+    const percentages = prices.map((price) =>
+      ((price / total) * 100).toFixed(2)
+    );
 
     // Define fixed and distinct colors
     const fixedColors = [
       "#FF5733",
-      "#33FF57",
-      "#5733FF",
-      "#FF33A1",
       "#33A1FF",
+      "#FF33A1",
+      "#33FF57",
       "#A1FF33",
+      "#5733FF",
     ];
 
     // Assign colors to categories
@@ -56,7 +58,9 @@ const PieChart = ({ info }) => {
             {
               data: prices,
               backgroundColor: category.map((cat) => categoryColors[cat]),
-              borderColor: category.map((cat) => categoryColors[cat].replace('0.2', '1')),
+              borderColor: category.map((cat) =>
+                categoryColors[cat].replace("0.2", "1")
+              ),
               borderWidth: 1,
             },
           ],
@@ -65,12 +69,12 @@ const PieChart = ({ info }) => {
           plugins: {
             legend: {
               display: true,
-              position: 'bottom',
+              position: "bottom",
             },
             tooltip: {
               callbacks: {
                 label: (context) => {
-                  const label = context.label || '';
+                  const label = context.label || "";
                   const value = context.parsed;
                   return `${label}: ${value}`;
                 },
@@ -94,7 +98,7 @@ const PieChart = ({ info }) => {
   return (
     <canvas
       className="w-full h-full"
-      style={{ maxWidth: '400px', maxHeight: '400px' }}
+      style={{ maxWidth: "400px", maxHeight: "400px" }}
       ref={chartRef}
     />
   );

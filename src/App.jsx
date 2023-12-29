@@ -8,6 +8,7 @@ import { AppState } from "./contextapi/dataupdate";
 import { useEffect } from "react";
 import { getalldatas } from "./api calls/Details";
 import Editpage from "./pages/Editpage";
+import AddincomePage from "./pages/Addincomepage";
 
 function App() {
 
@@ -40,7 +41,7 @@ const navigate = useNavigate()
           console.error("Error fetching data:", error);
         });
     }
-  }, []);
+  }, [key]);
   
 
   return (
@@ -51,6 +52,7 @@ const navigate = useNavigate()
         <Route path="/register" element={<RegisterUser />} />
         <Route path="/addexpense" element={<Addexpense />} />
         <Route path="/editexpense/:id" element={<Editpage />} />
+        <Route path="/addincome" element={<AddincomePage />} />
       </Routes>
     </div>
   );
