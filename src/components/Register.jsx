@@ -2,11 +2,13 @@ import { useFormik } from "formik";
 import { SignupSchema } from "../Formik/Signupformik";
 import { RegisternewUser } from "../api calls/signin";
 import { useState } from "react";
+import Footergrid from "./footer";
 
 const RegisterUser = () => {
   const [message, setmessage] = useState("");
   const [data, setdata] = useState("");
   const [loading, setLoading] = useState(false);
+
   const { values, handleChange, handleSubmit, errors, handleBlur, touched } =
     useFormik({
       initialValues: {
@@ -35,13 +37,14 @@ const RegisterUser = () => {
           setLoading(false);
           setTimeout(() => {
             setmessage(""), setdata("");
-          }, 10000);
+          }, 1000);
         }
       },
     });
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-2 h-50 ">
-      <div>
+    <>
+    <div className="grid grid-cols-1 sm:grid-cols-2 m-5 p-5">
+    <div>
         <img
           src="https://www.shutterstock.com/image-vector/register-new-user-account-registration-600nw-2297129373.jpg"
           alt="Login"
@@ -50,7 +53,7 @@ const RegisterUser = () => {
       </div>
 
       <div>
-        <h1 className="m-2 p-2">Sign Up </h1>
+        <h1 className=" text-center m-2 p-2">Sign Up </h1>
         <div>
           {message !== "" && (
             <div className="toast toast-top toast-end">
@@ -147,6 +150,8 @@ const RegisterUser = () => {
         </div>
       </div>
     </div>
+    <Footergrid/>
+    </>
   );
 };
 

@@ -1,4 +1,4 @@
-const Footer = () => {
+const Footergrid = () => {
   return (
     <>
 <div className="btm-nav">
@@ -69,4 +69,4 @@ const Footer = () => {
   );
 };
 
-export default Footer;
+export default Footergrid;

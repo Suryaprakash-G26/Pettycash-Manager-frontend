@@ -1,12 +1,12 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChartPie, faTable } from "@fortawesome/free-solid-svg-icons";
-import Topbar from "./topbar";
 import PieChart from "../Charts/piechart";
 import LineChart from "../Charts/linechart";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { useNavigate } from "react-router-dom";
 import { AppState } from "../contextapi/dataupdate";
 import { DeleteExpense } from "../api calls/Details";
+import DashboardTopar from "./dashboardsTopbar";
 
 const DashboardPage = () => {
   const navigate = useNavigate();
@@ -58,7 +58,7 @@ const DashboardPage = () => {
 
   return (
     <>
-      <Topbar />
+      <DashboardTopar />
       {success && (
         <div className="toast fixed toast-top toast-end">
           <div className="alert alert-success">

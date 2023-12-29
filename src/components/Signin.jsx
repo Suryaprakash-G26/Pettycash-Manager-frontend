@@ -3,9 +3,11 @@ import { useFormik } from "formik";
 import { SigninSchema } from "../Formik/signinformik";
 import { SigninUser } from "../api calls/signin";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import Footergrid from "./footer";
 
 const Signinuser = () => {
+  const navigate=useNavigate()
   const [data, setdata] = useState("");
   const [success, setsuccess] = useState("");
   const [loading, setLoading] = useState(false);
@@ -43,13 +45,14 @@ const Signinuser = () => {
           setLoading(false); // Set loading back to false after form submission
           setTimeout(() => {
             setsuccess(""), setdata("");
-          }, 5000); // set to null after 10 secconds
+            navigate('/')
+          }, 1000); 
         }
       },
     });
 
-  return (
-    <div className="grid grid-cols-1 sm:grid-cols-2">
+  return (<>
+   <div className="grid grid-cols-1 sm:grid-cols-2 m-5 p-5">
       <div>
         <img
           src="https://sm-s.in/assets/images/user/login.gif"
@@ -57,76 +60,92 @@ const Signinuser = () => {
           className="h-full"
         />
       </div>
-
-      <div className="flex flex-col justify-center items-center m-2">
-        <h1 className="text-center m-4">Sign In</h1>
-        <div className="w-full max-w-xs">
-          {success !== "" && (
-            <div className="toast toast-top toast-end">
-              <div className="alert alert-success">
-                <span>{success}</span>
+      <div>
+        <div className="flex flex-col justify-center items-center m-2">
+          <h1 className="text-center m-4">Sign In</h1>
+          <div className="w-full max-w-xs">
+            {success !== "" && (
+              <div className="toast toast-top toast-end">
+                <div className="alert alert-success">
+                  <span>{success}</span>
+                </div>
               </div>
-            </div>
-          )}
+            )}
 
-          {data !== "" && (
-            <div className="toast toast-top toast-end">
-              <div className="alert alert-info">
-                <span>{data}</span>
+            {data !== "" && (
+              <div className="toast toast-top toast-end">
+                <div className="alert alert-info">
+                  <span>{data}</span>
+                </div>
               </div>
-            </div>
-          )}
-
-          <form onSubmit={handleSubmit}>
-            <input
-              type="text"
-              placeholder="Enter email"
-              name="email"
-              value={values.email}
-              onBlur={handleBlur}
-              onChange={handleChange}
-              className="input input-bordered input-accent w-full m-2 p-2"
-            />
-            {touched.email && errors.email && (
-              <div className="text-error">{errors.email}</div>
             )}
-            <input
-              type="password"
-              placeholder="Enter password"
-              name="password"
-              value={values.password}
-              onBlur={handleBlur}
-              onChange={handleChange}
-              className="input input-bordered input-accent w-full m-2 p-2"
-            />
-            {touched.password && errors.password && (
-              <div className="text-error">{errors.password}</div>
-            )}
-            <div className="text-end mb-5">
-              {/* <Link to="/forgot-password" className="text-accent hover:underline">
-                Forgot Password?
-              </Link>         */}
-              forgot paassword
-            </div>
-            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-  <button
-    className="btn btn-success m-2 p-2"
-    type="submit"
-    disabled={loading}
-  >
-    {loading ? (
-      <div className="loading loading-spinner text-accent"></div>
-    ) : (
-      "Login"
-    )}
-  </button>
-</div>
 
-
-          </form>
+            <form onSubmit={handleSubmit}>
+              <input
+                type="text"
+                placeholder="Enter email"
+                name="email"
+                value={values.email}
+                onBlur={handleBlur}
+                onChange={handleChange}
+                className="input input-bordered input-accent w-full m-2 p-2"
+              />
+              {touched.email && errors.email && (
+                <div className="text-error">{errors.email}</div>
+              )}
+              <input
+                type="password"
+                placeholder="Enter password"
+                name="password"
+                value={values.password}
+                onBlur={handleBlur}
+                onChange={handleChange}
+                className="input input-bordered input-accent w-full m-2 p-2"
+              />
+              {touched.password && errors.password && (
+                <div className="text-error">{errors.password}</div>
+              )}
+              <div className="text-end mb-5">
+                <Link
+                  to="/forgot-password"
+                  className="text-error hover:underline"
+                >
+                  Forgot Password?
+                </Link>
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <button
+                  className="btn btn-success m-2 p-2"
+                  type="submit"
+                  disabled={loading}
+                >
+                  {loading ? (
+                    <div className="loading loading-spinner text-accent"></div>
+                  ) : (
+                    "Login"
+                  )}
+                </button>
+              </div>
+              <div className="text-end m-2">
+                Dont have account ?{" "}
+                <Link to="/register" className="text-success hover:underline">
+                  Create one{" "}
+                </Link>
+              </div>
+            </form>
+          </div>
         </div>
       </div>
     </div>
+    <Footergrid/>
+  </>
+   
   );
 };
 
