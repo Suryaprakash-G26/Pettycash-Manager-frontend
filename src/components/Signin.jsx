@@ -105,14 +105,15 @@ const Signinuser = () => {
               {touched.password && errors.password && (
                 <div className="text-error">{errors.password}</div>
               )}
-              <div className="text-end mb-5">
+               {/* update pending */}
+              {/* <div className="text-end mb-5">
                 <Link
                   to="/forgot-password"
                   className="text-error hover:underline"
                 >
                   Forgot Password?
                 </Link>
-              </div>
+              </div> */}
               <div
                 style={{
                   display: "flex",
