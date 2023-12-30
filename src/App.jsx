@@ -9,6 +9,8 @@ import { useEffect } from "react";
 import { getalldatas } from "./api calls/Details";
 import Editpage from "./pages/Editpage";
 import AddincomePage from "./pages/Addincomepage";
+import Expense from "./components/Expense";
+import Income from "./components/Income";
 
 function App() {
 
@@ -50,6 +52,8 @@ const navigate = useNavigate()
         <Route exact path="/" element={<DashboardPage />} />
         <Route path="/signin" element={<Signinuser />} />
         <Route path="/register" element={<RegisterUser />} />
+        <Route path="/Income" element={<Income />} />
+        <Route path="/Expense" element={<Expense />} />
         <Route path="/addexpense" element={<Addexpense />} />
         <Route path="/editexpense/:id" element={<Editpage />} />
         <Route path="/addincome" element={<AddincomePage />} />

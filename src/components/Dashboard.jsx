@@ -6,6 +6,7 @@ import { AppState } from "../contextapi/dataupdate";
 import { DeleteExpense } from "../api calls/Details";
 import DashboardTopar from "./dashboardsTopbar";
 import FiltersandFunc from "./filters";
+import Footergrid from "./footer";
 
 const DashboardPage = () => {
   const navigate = useNavigate();
@@ -142,6 +143,8 @@ const DashboardPage = () => {
         </div>
       )}
     </div>
+
+    <Footergrid/>
   </>
   );
 };

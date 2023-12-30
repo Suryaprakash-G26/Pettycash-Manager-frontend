@@ -17,8 +17,10 @@ export default function DashboardTopar() {
         </div>
         <div className="flex-none">
           <ul className="menu menu-horizontal px-1">
+          {/* <li className="p-2 btn-sm bg-base-100" onClick={() => navigate('/Expense')}> Expense</li>
+          <li className="p-2 btn-sm bg-base-100" onClick={() => navigate('/Income')}> Income</li> */}
             <li className="p-2 btn-sm bg-base-100" onClick={() => navigate('/addexpense')}>Add Expense</li>
-            <li className="p-2 btn-sm bg-base-100" onClick={() => navigate('/addincome')}>Add Income</li>
+            {/* <li className="p-2 btn-sm bg-base-100" onClick={() => navigate('/addincome')}>Add Income</li> */}
             <li className="p-2 btn-sm bg-base-100" onClick={() => logout()}>Logout</li>
           </ul>
           <div className="dropdown dropdown-hover dropdown-end">

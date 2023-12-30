@@ -2,7 +2,7 @@ const Addincome=()=>{
 
     return(
         <>
-        hii
+        Hi buddy 
         </>
     )
 }
