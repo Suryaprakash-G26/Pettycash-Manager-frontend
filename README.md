@@ -19,12 +19,7 @@ Pettycash Manager is a MERN stack web application for efficient management of pe
 - Formik and Yup for form handling and validation
 - JSON Web Tokens (JWT) for user authentication
 
-## Getting Started
 
-### Prerequisites
-
-- Node.js and npm installed
-- MongoDB installed and running
 
 ### Installation
 
