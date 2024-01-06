@@ -11,25 +11,24 @@ import Editpage from "./pages/Editpage";
 import AddincomePage from "./pages/Addincomepage";
 import Expense from "./components/Expense";
 import Income from "./components/Income";
+import { GetallIncome } from "./api calls/income";
 
 function App() {
-
   //context Api
-  const {setinfo,info}=AppState();
-//navigate
-const navigate = useNavigate()
+  const { setinfo, info, setincome,income,settotal,total } = AppState();
+  //navigate
+  const navigate = useNavigate();
   //get from local storage
   const key = localStorage.getItem("Key");
   // Parse the data
   const userid = JSON.parse(key);
   // if userid not available redirect to login
 
-
   // Store data locally
   useEffect(() => {
     if (!key) {
       // Handle unauthorized access, e.g., show a message or redirect to login
-      navigate('/signin');
+      navigate("/signin");
       return;
     }
 
@@ -42,10 +41,19 @@ const navigate = useNavigate()
         .catch((error) => {
           console.error("Error fetching data:", error);
         });
-    }
-  }, [key]);
-  
+      GetallIncome(userid)
+        .then((data) => {
+          setincome(data.data);
+        })
+        .catch((error) => {
+          console.error("Error fetching data:", error);
+        });
 
+        settotal([...info,...income])
+    }
+  }, [income, info, key, navigate, setincome, setinfo, settotal, userid]);
+
+console.log(total)
   return (
     <div className="App ">
       <Routes>

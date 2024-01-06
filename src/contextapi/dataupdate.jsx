@@ -11,6 +11,8 @@ const AppContext = ({ children }) => {
   const [showTable, setShowTable] = useState(true);
   const [editable, setEditable] = useState(null);
   const [index, setIndex] = useState(null);
+  const [income, setincome] = useState([]);
+  const [total, settotal] = useState([]);
 
   return (
     <AppCtx.Provider
@@ -31,6 +33,10 @@ const AppContext = ({ children }) => {
         setEditable,
         index,
         setIndex,
+        income,
+        setincome,
+        total,
+        settotal,
       }}
     >
       {children}

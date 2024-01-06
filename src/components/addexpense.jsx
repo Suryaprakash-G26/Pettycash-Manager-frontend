@@ -42,7 +42,7 @@ const navigate=useNavigate()
               setsuccess(info.data);
               setdata("");
               console.log(info);
-              setinfo(info.newdata)
+              setinfo([...info,info.newdata])
             }
           } catch (error) {
             console.error("Error during form submission:", error);
@@ -58,7 +58,7 @@ navigate('/')
     });
 
   return (
-    <div className="flex flex-col justify-center items-center m-5 max-w-lg mx-auto">
+    <div className="flex flex-col justify-center items-center m-5 max-w-lg  mx-auto">
     <div className="card m-5 p-5 bg-base-100 shadow-xl image-full">
   
         <figure>
@@ -85,7 +85,7 @@ navigate('/')
             </div>
           )}
           <div className="flex flex-col justify-center items-center m-2">
-            <div className="w-full max-w-xs">
+            <div className="w-full text-black	 max-w-xs">
               <form onSubmit={handleSubmit}>
                 <div className="m-2">
                   <input
